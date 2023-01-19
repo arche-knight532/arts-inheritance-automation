@@ -15,7 +15,7 @@ from configparser import ConfigParser
 # - If logging is set to "enabled", log data on pulls into a dict object, load into a file at end of run
 
 def loadConfig():
-    global x1, x2, y1, y2, arts, pullLimit, logging
+    global x1, x2, y1, y2, arts, description, pullLimit, logging
     print("loading config")
     config = ConfigParser()
     config.read("config.ini")
@@ -26,6 +26,7 @@ def loadConfig():
     y2 = int(config["DEFAULT"]["y2"])
     #potentially strip each item in arts to user-proof this?
     arts = config["DEFAULT"]["arts"].split(",")
+    description = config["DEFAULT"]["description"].split(",")
     pullLimit = int(config["DEFAULT"]["pullLimit"])
     logging = config["DEFAULT"]["logging"]
 
@@ -47,12 +48,16 @@ def cropImage():
     imgCropped.save("screenshot.png")
     print("cropped image saved")
 
-def checkImage():
+def checkArtName():
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
     #print(pytesseract.image_to_string(Image.open('test2.png')))
     artPulled = pytesseract.image_to_string(Image.open('screenshot.png')).strip()
     print(f"Art pulled: {artPulled}")
     return artPulled in arts
+
+def checkDescriptionless():
+    pass
+    #Code for checking if an art is descriptionless
 
 def countArtPulls():
     pass
@@ -68,7 +73,7 @@ def main():
     loadConfig()
     takeScreenshot()
     cropImage()
-    isInArtList = checkImage()
+    isInArtList = checkArtName()
     if isInArtList:
         print("Art pulled in requested arts")
     else:
