@@ -7,8 +7,15 @@ import time
 from configparser import ConfigParser
 
 
+#TODO:
+# - Add descriptionless art checker
+# - Add actual code to control the Switch
+# - Have code stop pulling after pullLimit art pulls
+#Bonus features:
+# - If logging is set to "enabled", log data on pulls into a dict object, load into a file at end of run
+
 def loadConfig():
-    global x1, x2, y1, y2, arts, pullLimit
+    global x1, x2, y1, y2, arts, pullLimit, logging
     print("loading config")
     config = ConfigParser()
     config.read("config.ini")
@@ -20,6 +27,7 @@ def loadConfig():
     #potentially strip each item in arts to user-proof this?
     arts = config["DEFAULT"]["arts"].split(",")
     pullLimit = int(config["DEFAULT"]["pullLimit"])
+    logging = config["DEFAULT"]["logging"]
 
 def takeScreenshot():
     print("taking screenshot")
@@ -46,7 +54,17 @@ def checkImage():
     print(f"Art pulled: {artPulled}")
     return artPulled in arts
 
+def countArtPulls():
+    pass
+    #Code for counting art pulls goes here
+
+def writeLogFile():
+    pass
+    #Code for output log file on art pulls goes here
+
 def main():
+    #artsLog to be dict data type, only used if logging == "enabled"
+    global artsLog
     loadConfig()
     takeScreenshot()
     cropImage()
