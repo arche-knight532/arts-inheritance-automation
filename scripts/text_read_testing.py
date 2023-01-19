@@ -20,6 +20,8 @@ def loadConfig():
     config = ConfigParser()
     config.read("config.ini")
     #print(config.sections())
+    
+    #grab positions of art name/description. 1/2 correspond to art name, 3/4 correspond to description
     x1 = int(config["DEFAULT"]["x1"])
     x2 = int(config["DEFAULT"]["x2"])
     x3 = int(config["DEFAULT"]["x3"])
@@ -28,13 +30,19 @@ def loadConfig():
     y2 = int(config["DEFAULT"]["y2"])
     y3 = int(config["DEFAULT"]["y3"])
     y4 = int(config["DEFAULT"]["y4"])
+    
+    #get art names and whether or not user wants art to be descriptionless
     #potentially strip each item in arts to user-proof this?
     arts = config["DEFAULT"]["arts"].split(",")
     description = config["DEFAULT"]["description"].split(",")
+    
+    #pull limit and logging config
     pullLimit = int(config["DEFAULT"]["pullLimit"])
     logging = config["DEFAULT"]["logging"]
 
+
 def takeScreenshot():
+    #code to take screenshot, save to screenshot.png in current directory
     print("taking screenshot")
     image_name = "screenshot.png"
     screenshot = ImageGrab.grab()
@@ -43,7 +51,9 @@ def takeScreenshot():
     print("screenshot saved")
     return filepath
 
+
 def cropImage():
+    #code for cropping out the art name and description of the art
     print("cropping image")
     image_name = "screenshot.png"
     img = Image.open(image_name)
@@ -54,11 +64,14 @@ def cropImage():
     imgCroppedDescription.save("artDescription.png")
     print("cropped image saved")
 
+
 def checkArtName():
+    #Code for checking the name of the art
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
     artPulled = pytesseract.image_to_string(Image.open('artName.png')).strip()
     print(f"Art pulled: '{artPulled}'")
     return artPulled
+
 
 def checkArtDescription():
     #Code for checking if an art is descriptionless
@@ -67,13 +80,16 @@ def checkArtDescription():
     print(f"Art description: '{artDescription}'")
     return artDescription
 
+
 def countArtPulls():
-    pass
     #Code for counting art pulls goes here
+    pass
+
 
 def writeLogFile():
-    pass
     #Code for output log file on art pulls goes here
+    pass
+
 
 def main():
     #artsLog to be dict data type, only used if logging == "enabled"
@@ -86,17 +102,23 @@ def main():
         cropImage()
         artName = checkArtName()
         description = checkArtDescription()
+        
+        #TODO: logic for checking if art is requested needs to be updated for description checking
         #if artName in arts:
         #    print("Art pulled in requested arts")
         #else:
         #    print("Art pulled not in requested arts")
-        time.sleep(1)
+        
+        #logging and updating iteration counter
         if logging == "enable":
             countArtPulls()
         iteration += 1
+        time.sleep(1)
 
+    #write log file if applicable
     if logging == "enable":
         writeLogFile()
+
 
 if __name__ == '__main__':
     main()
