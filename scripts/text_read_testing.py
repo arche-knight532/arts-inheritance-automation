@@ -15,15 +15,19 @@ from configparser import ConfigParser
 # - If logging is set to "enabled", log data on pulls into a dict object, load into a file at end of run
 
 def loadConfig():
-    global x1, x2, y1, y2, arts, description, pullLimit, logging
+    global x1, x2, x3, x4, y1, y2, y3, y4, arts, description, pullLimit, logging
     print("loading config")
     config = ConfigParser()
     config.read("config.ini")
     #print(config.sections())
     x1 = int(config["DEFAULT"]["x1"])
     x2 = int(config["DEFAULT"]["x2"])
+    x3 = int(config["DEFAULT"]["x3"])
+    x4 = int(config["DEFAULT"]["x4"])
     y1 = int(config["DEFAULT"]["y1"])
     y2 = int(config["DEFAULT"]["y2"])
+    y3 = int(config["DEFAULT"]["y3"])
+    y4 = int(config["DEFAULT"]["y4"])
     #potentially strip each item in arts to user-proof this?
     arts = config["DEFAULT"]["arts"].split(",")
     description = config["DEFAULT"]["description"].split(",")
@@ -43,21 +47,25 @@ def cropImage():
     print("cropping image")
     image_name = "screenshot.png"
     img = Image.open(image_name)
-    imgCropped = img.crop(box = (x1, y1, x2, y2))
+    imgCroppedArt = img.crop(box = (x1, y1, x2, y2))
+    imgCroppedDescription = img.crop(box = (x3, y3, x4, y4))
     #imgCropped.show()
-    imgCropped.save("screenshot.png")
+    imgCroppedArt.save("artName.png")
+    imgCroppedDescription.save("artDescription.png")
     print("cropped image saved")
 
 def checkArtName():
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
-    #print(pytesseract.image_to_string(Image.open('test2.png')))
-    artPulled = pytesseract.image_to_string(Image.open('screenshot.png')).strip()
-    print(f"Art pulled: {artPulled}")
-    return artPulled in arts
+    artPulled = pytesseract.image_to_string(Image.open('artName.png')).strip()
+    print(f"Art pulled: '{artPulled}'")
+    return artPulled
 
-def checkDescriptionless():
-    pass
+def checkArtDescription():
     #Code for checking if an art is descriptionless
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+    artDescription = pytesseract.image_to_string(Image.open('artDescription.png')).strip()
+    print(f"Art description: '{artDescription}'")
+    return artDescription
 
 def countArtPulls():
     pass
@@ -69,15 +77,26 @@ def writeLogFile():
 
 def main():
     #artsLog to be dict data type, only used if logging == "enabled"
-    global artsLog
+    global artsLog, artName, description
+    iteration = 1
     loadConfig()
-    takeScreenshot()
-    cropImage()
-    isInArtList = checkArtName()
-    if isInArtList:
-        print("Art pulled in requested arts")
-    else:
-        print("Art pulled not in requested arts")
+    while iteration <= pullLimit:
+        print(f"iteration = {iteration}")
+        takeScreenshot()
+        cropImage()
+        artName = checkArtName()
+        description = checkArtDescription()
+        #if artName in arts:
+        #    print("Art pulled in requested arts")
+        #else:
+        #    print("Art pulled not in requested arts")
+        time.sleep(1)
+        if logging == "enable":
+            countArtPulls()
+        iteration += 1
+
+    if logging == "enable":
+        writeLogFile()
 
 if __name__ == '__main__':
     main()
