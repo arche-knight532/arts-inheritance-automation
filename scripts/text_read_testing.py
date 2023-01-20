@@ -105,10 +105,13 @@ def writeLogFile():
                 artsPulledCounts[i] = artsPulledCounts[j]
                 artsPulledCounts[j] = temp
 
+                temp = artsPulledLog[i]
+                artsPulledLog[i] = artsPulledLog[j]
+                artsPulledLog[j] = temp
+
     for i in range(0, length):
-        #print(f"art: '{artsPulledLog[i]}', count: '{artsPulledCounts[i]}'")
         file.write(f"{artsPulledLog[i]},{artsPulledCounts[i]}\n")
-        i = i + 1
+
     file.close()
     print(f"Written to output file {outputFilename}")
 
