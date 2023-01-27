@@ -1,18 +1,22 @@
 import pytesseract
 import pyscreenshot as ImageGrab
 from PIL import Image
+import serial
 
 import time
 from configparser import ConfigParser
+import argparse
 
 
 #TODO:
 # - Add actual code to control the Switch
+#Bonus:
+# - maybe make it so it logs if it gets a sigkill?
 
 def loadConfig():
     #loads config file "config.ini"
-    global x1, x2, x3, x4, y1, y2, y3, y4, arts, description, pullLimit, logging, tesseractLocation
-    print("loading config")
+    global x1, x2, x3, x4, y1, y2, y3, y4, arts, description, pullLimit, logging, tesseractLocation, port
+    #print("loading config")
     config = ConfigParser()
     config.read("config.ini")
 
@@ -34,11 +38,12 @@ def loadConfig():
     pullLimit = int(config["DEFAULT"]["pullLimit"])
     logging = config["DEFAULT"]["logging"]
     tesseractLocation = config["DEFAULT"]["tesseractLocation"]
+    port = config["DEFAULT"]["port"]
 
 
 def takeScreenshot():
     #takes screenshot, save to screenshot.png in current directory
-    print("taking screenshot")
+    #print("taking screenshot")
     image_name = "screenshot.png"
     screenshot = ImageGrab.grab()
     filepath = f".\\{image_name}"
@@ -47,7 +52,7 @@ def takeScreenshot():
 
 def cropImage():
     #crops out the art name and description of the art, saves to corresponding files
-    print("cropping image")
+    #print("cropping image")
     image_name = "screenshot.png"
     img = Image.open(image_name)
     imgCroppedArt = img.crop(box = (x1, y1, x2, y2))
@@ -61,7 +66,7 @@ def checkArtName():
     #check the name of the art
     pytesseract.pytesseract.tesseract_cmd = tesseractLocation
     artPulled = pytesseract.image_to_string(Image.open('artName.png')).strip()
-    print(f"Art pulled: '{artPulled}'")
+    #print(f"Art pulled: '{artPulled}'")
     return artPulled
 
 
@@ -69,7 +74,7 @@ def checkArtDescription():
     #check if an art is descriptionless
     pytesseract.pytesseract.tesseract_cmd = tesseractLocation
     artDescription = pytesseract.image_to_string(Image.open('artDescription.png')).strip()
-    print(f"Art description: '{artDescription}'")
+    #print(f"Art description: '{artDescription}'")
     return artDescription
 
 
@@ -99,7 +104,7 @@ def writeLogFile():
 
     #bubble sort because I'm a lazy bitch, also it's really shitty, also I didn't want to deal with dictionaries
     for i in range(0, length):
-        for j in range(i, length):
+        for j in range(i+1, length):
             if artsPulledCounts[i] < artsPulledCounts[j]:
                 temp = artsPulledCounts[i]
                 artsPulledCounts[i] = artsPulledCounts[j]
@@ -116,6 +121,13 @@ def writeLogFile():
     print(f"Written to output file {outputFilename}")
 
 
+def press(ser, s):
+    ser.write(s.encode())
+    time.sleep(0.05)
+    ser.write(b'0')
+    time.sleep(0.075)
+
+
 def main():
     #artsPulledLog and artsPulledCounts to be used for tracking pulls if logging == "enabled"
     global artsPulledLog, artsPulledCounts, artName, desc
@@ -125,30 +137,44 @@ def main():
     artsPulledLog = []
     artsPulledCounts = []
 
-    #loop for pullLimit iterations
-    for i in range(1, pullLimit):
-        #TODO: code for controlling the switch goes here vvv
+    #initialize controller
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--count', type=int, default=1)
+    parser.add_argument('--serial', default=port)
+    args = parser.parse_args()
+    with serial.Serial(args.serial, 9600) as ser:
 
-        #check art
-        print(f"iteration = {i}")
-        takeScreenshot()
-        cropImage()
-        artName = checkArtName()
-        desc = checkArtDescription()
+        #loop for pullLimit iterations
+        for i in range(1, pullLimit+1):
+            print(f"iteration = {i}")
 
-        #count art if logging enabled
-        if logging == "enable":
-            countArtPulls()
+            #pull art
+            press(ser, 'A')
+            time.sleep(1)
+            press(ser, 'r')
+            time.sleep(0.5)
 
-        #art confirmation
-        if artName in arts:
-            index = arts.index(artName)
-            if description[index] == "n" and desc == "":
-                break
-            if description[index] == "y" and desc != "":
-                break
+            #check art
+            takeScreenshot()
+            cropImage()
+            artName = checkArtName()
+            desc = checkArtDescription()
 
-        time.sleep(1)
+            #count art if logging enabled
+            if logging == "enable":
+                countArtPulls()
+
+            #art confirmation
+            if artName in arts:
+                index = arts.index(artName)
+                if description[index] == "n" and desc == "":
+                    break
+                if description[index] == "y" and desc != "":
+                    break
+
+            #exit from art menu
+            press(ser, 'B')
+            time.sleep(1)
 
     #write log file if enabled
     if logging == "enable":
