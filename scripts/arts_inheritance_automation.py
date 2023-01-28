@@ -98,7 +98,7 @@ def countArtPulls():
 def writeLogFile():
     #write counts to log if logging is enabled
     global artsPulledLog, artsPulledCounts
-    outputFilename = "artsLog.csv";
+    outputFilename = "artsLog.txt";
     file = open(outputFilename, "w")
     length = len(artsPulledLog)
 
