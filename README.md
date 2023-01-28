@@ -70,12 +70,6 @@ python arts_inheritance_automation.py
   ```
 
   ```
-V: enable verbose mode (microcontroller will reply with `revc: _`)
-v: disable verbose mode
-
-!: enable output on pin 9 (buzzer)
-.: disable output on pin 9
-
 0: empty state (no buttons pressed)
 A: A is pressed
 B: B is pressed
