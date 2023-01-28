@@ -55,7 +55,7 @@
 At some point I intend to add a script to automate this process for the user. When this is done, this documentation will be updated.
 
 ### Program Execution
-  Have the menu open with the cursor over "Arts" before beginning program execution. Then, simply run the below command from the [scripts](scripts) directory.
+  Have the menu open with the cursor over "Arts" before beginning program execution. Then, simply run the below command from the [scripts](scripts) directory. This script can be run from either your main OS or from the Virtual Machine.
   
   ```bash
 python arts_inheritance_automation.py
