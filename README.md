@@ -62,3 +62,41 @@ python arts_inheritance_automation.py
 ```
 
   This program will use the main monitor of your computer and your Switch for as long as it takes to execute. If one of the requested arts is found, the program will return to the arts list (rather than the art level list) and end execution. If the art is not found, the program will end by closing out of the arts menu.
+
+  If you need to input individual button presses for menu navigation without switching controllers, you can use the `press.py` script. Syntax for using the script can be found below. Additionally, the characters and their corresponding button inputs can be found below or in [ascottile's readme](https://github.com/asottile/switch-microcontroller)
+
+  ```
+  python press.py <char>
+  ```
+
+  ```
+V: enable verbose mode (microcontroller will reply with `revc: _`)
+v: disable verbose mode
+
+!: enable output on pin 9 (buzzer)
+.: disable output on pin 9
+
+0: empty state (no buttons pressed)
+A: A is pressed
+B: B is pressed
+X: X is pressed
+Y: Y is pressed
+H: Home is pressed
++: + is pressed
+-: - is pressed
+L: left trigger is pressed
+R: right trigger is pressed
+l: ZL is pressed
+r: ZR is pressed
+
+directions:
+ LEFT STICK            RIGHT STICK
+
+      w                     u
+   q     e               y     i
+      ║                     ║
+a  ═══╬═══  d         h  ═══╬═══  k
+      ║                     ║
+   z     c               n     m
+      s                     j
+```
