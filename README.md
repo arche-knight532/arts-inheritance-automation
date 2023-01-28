@@ -4,7 +4,7 @@
  This project will be updated over time with new features and quality of life improvements. This is currently a personal project and will not be accepting assistance from other collaborators. If you have any feedback or questions, please feel free to reach out to me over Discord. I can be easily found in the [Xeno Speedrun Discord server](https://discord.gg/RTVDKhp).
 
 ## Prerequisites (Hardware/Software)
- Below are the required hardware to run this project and control the Nintendo Switch. Combined these components come to ~$25:
+ Below are the required hardware to run this project and control the Nintendo Switch. Combined these components come to ~$25.
   - Arduino Microcontroller: [Pre-pinned](https://www.cytron.io/p-arduino-pro-micro-compatible-pre-soldered-headers) or [non-pre-pinned](https://amzn.to/3rpb36r) versions of the microcontroller I used. 
     - If you purchase the non-pre-pinned version, you will have to solder the pins on yourself. If you do not have access to a soldering iron, I recommend the pre-pinned version. I personally purchased the non-pre-pinned one so I cannot speak to the quality of the pre-pinned version linked above.
   - [UART to USB converter](https://www.amazon.com/IZOKEE-CP2102-Converter-Adapter-Downloader/dp/B07D6LLX19/ref=sr_1_4?keywords=usb+to+uart&qid=1674486848&sr=8-4)
@@ -13,7 +13,7 @@
     - Can probably be gotten for cheaper at Walmart or similar stores
   - Depending on how you want to hook it up, a breadboard and some short wires
  
- Below are the required software to run this project:
+ Below are the required software to run this project. All the required software is free to install/use.
   - [Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html)
   - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
   - [Python 3](https://www.python.org/downloads/) (any version of python 3 will work, I used 3.11.1)
