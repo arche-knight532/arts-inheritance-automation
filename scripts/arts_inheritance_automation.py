@@ -8,10 +8,10 @@ from configparser import ConfigParser
 import argparse
 
 
-#TODO:
-# - Add actual code to control the Switch
-#Bonus:
+#Bonus features to maybe work on:
+# - mayke a script to generate config file based on user inputs (potentially clicks for x/y coordinates)
 # - maybe make it so it logs if it gets a sigkill?
+# - maybe include way for users to run script online/remotely rather than needing to clone repo? not exactly sure an easy way to set that up
 
 def loadConfig():
     #loads config file "config.ini"
@@ -114,14 +114,16 @@ def writeLogFile():
                 artsPulledLog[i] = artsPulledLog[j]
                 artsPulledLog[j] = temp
 
+    #write arrays to file
     for i in range(0, length):
-        file.write(f"{artsPulledLog[i]},{artsPulledCounts[i]}\n")
+        file.write(f"{artsPulledLog[i]}\t{artsPulledCounts[i]}\n")
 
     file.close()
     print(f"Written to output file {outputFilename}")
 
 
 def press(ser, s):
+    #press and release desired button
     ser.write(s.encode())
     time.sleep(0.05)
     ser.write(b'0')
@@ -150,9 +152,9 @@ def main():
 
             #pull art
             press(ser, 'A')
-            time.sleep(1)
+            time.sleep(0.7)
             press(ser, 'r')
-            time.sleep(0.5)
+            time.sleep(0.2)
 
             #check art
             takeScreenshot()
@@ -168,13 +170,15 @@ def main():
             if artName in arts:
                 index = arts.index(artName)
                 if description[index] == "n" and desc == "":
+                    press(ser, 'l')
                     break
                 if description[index] == "y" and desc != "":
+                    press(ser, 'l')
                     break
 
             #exit from art menu
             press(ser, 'B')
-            time.sleep(1)
+            time.sleep(0.7)
 
     #write log file if enabled
     if logging == "enable":

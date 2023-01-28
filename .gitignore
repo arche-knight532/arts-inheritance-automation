@@ -1,4 +1,3 @@
 
-scripts/screenshot.png
 *.png
-scripts/artsLog.csv
+*.csv
