@@ -63,7 +63,7 @@ python arts_inheritance_automation.py
 
   This program will use the main monitor of your computer and your Switch for as long as it takes to execute. If one of the requested arts is found, the program will return to the arts list (rather than the art level list) and end execution. If the art is not found, the program will end by closing out of the arts menu.
 
-  If you need to input individual button presses for menu navigation without switching controllers, you can use the `press.py` script. Syntax for using the script can be found below. Additionally, the characters and their corresponding button inputs can be found below or in [ascottile's readme](https://github.com/asottile/switch-microcontroller)
+  If you need to input individual button presses for menu navigation without switching controllers, you can use the `press.py` script. Syntax for using the script can be found below. Additionally, the characters and their corresponding button inputs can be found below or in [ascottile's readme](https://github.com/asottile/switch-microcontroller).
 
   ```
   python press.py <char>
