@@ -89,7 +89,7 @@ directions:
       w                     u
    q     e               y     i
       ║                     ║
-a  ═══╬═══  d         h  ═══╬═══  k
+a ══╬═══  d         h  ═══╬═══  k
       ║                     ║
    z     c               n     m
       s                     j
