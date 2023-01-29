@@ -130,6 +130,18 @@ def press(ser, s):
     time.sleep(0.075)
 
 
+def sleepConsole(ser):
+    #press and release desired button
+    ser.write('H'.encode())
+    time.sleep(2)
+    ser.write(b'0')
+    time.sleep(0.075)
+    ser.write('A'.encode())
+    time.sleep(0.05)
+    ser.write(b'0')
+    time.sleep(0.075)
+
+
 def main():
     #artsPulledLog and artsPulledCounts to be used for tracking pulls if logging == "enabled"
     global artsPulledLog, artsPulledCounts, artName, desc
@@ -152,7 +164,7 @@ def main():
 
             #pull art
             press(ser, 'A')
-            time.sleep(0.7)
+            time.sleep(0.8)
             press(ser, 'r')
             time.sleep(0.2)
 
@@ -179,6 +191,8 @@ def main():
             #exit from art menu
             press(ser, 'B')
             time.sleep(0.7)
+        #sleep console after completion
+        sleepConsole(ser)
 
     #write log file if enabled
     if logging == "enable":
