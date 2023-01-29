@@ -10,7 +10,7 @@
   - [UART to USB converter](https://www.amazon.com/IZOKEE-CP2102-Converter-Adapter-Downloader/dp/B07D6LLX19/ref=sr_1_4?keywords=usb+to+uart&qid=1674486848&sr=8-4)
     - You may need to manually install the driver, which can be found [here](https://www.usb-drivers.org/cp2102-usb-to-uart-bridge-driver.html)
   - [USB-A to Micro USB-B cable](https://www.amazon.com/AmazonBasics-Male-Micro-Cable-Black/dp/B07232M876?th=1)
-    - Can probably be gotten for cheaper at Walmart or similar stores
+    - Can be gotten for cheaper at Walmart or similar stores
   - Depending on how you want to hook it up, a breadboard and some short wires
  
  Below are the required software to run this project. All the required software is free to install/use.
