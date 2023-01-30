@@ -1,7 +1,7 @@
 # arts-inheritance-automation
  A project to automate the process of pulling arts from Arts Gacha for the Arts Inheritance glitch in XC:DE.
  
- This project will be updated over time with new features and quality of life improvements. To get the most recent updates to the script, simply do a fetch and pull of the repo. This is currently a personal project and will not be accepting assistance from other collaborators.
+ This project will be updated over time with new features and quality of life improvements. To get the most recent updates to the script, simply do a fetch and pull of the repo; however, be aware that this might overwrite your config.ini file. This is currently a personal project and will not be accepting assistance from other collaborators.
  
  If you have any feedback or questions, please feel free to reach out to me over Discord. I can be easily found in the [Xeno Speedrun Discord server](https://discord.gg/RTVDKhp).
 
