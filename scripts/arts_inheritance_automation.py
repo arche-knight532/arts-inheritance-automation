@@ -164,7 +164,7 @@ def main():
 
             #pull art
             press(ser, 'A')
-            time.sleep(0.8)
+            time.sleep(0.75)
             press(ser, 'r')
             time.sleep(0.2)
 
