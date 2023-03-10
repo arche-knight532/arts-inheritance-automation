@@ -4,6 +4,7 @@ from PIL import Image
 import serial
 
 import time
+from datetime import datetime;
 from configparser import ConfigParser
 import argparse
 
@@ -41,6 +42,19 @@ def loadConfig():
     port = config["DEFAULT"]["port"]
 
 
+def checkArt():
+    global artName, desc
+    screenshot = ImageGrab.grab()
+    imgCroppedArt = screenshot.crop(box = (x1, y1, x2, y2))
+    imgCroppedDescription = screenshot.crop(box = (x3, y3, x4, y4))
+    
+    pytesseract.pytesseract.tesseract_cmd = tesseractLocation
+    artName = pytesseract.image_to_string(imgCroppedArt).strip()
+    desc = pytesseract.image_to_string(imgCroppedDescription).strip()
+
+
+#will remove never
+'''
 def takeScreenshot():
     #takes screenshot, save to screenshot.png in current directory
     #print("taking screenshot")
@@ -76,6 +90,7 @@ def checkArtDescription():
     artDescription = pytesseract.image_to_string(Image.open('artDescription.png')).strip()
     #print(f"Art description: '{artDescription}'")
     return artDescription
+'''
 
 
 def countArtPulls():
@@ -150,6 +165,8 @@ def main():
     loadConfig()
     artsPulledLog = []
     artsPulledCounts = []
+    
+    print(f"Start time: {datetime.now()}")
 
     #initialize controller
     parser = argparse.ArgumentParser()
@@ -164,15 +181,17 @@ def main():
 
             #pull art
             press(ser, 'A')
-            time.sleep(0.75)
+            time.sleep(0.7)
             press(ser, 'r')
             time.sleep(0.2)
 
             #check art
-            takeScreenshot()
-            cropImage()
-            artName = checkArtName()
-            desc = checkArtDescription()
+            #takeScreenshot()
+            #cropImage()
+            #artName = checkArtName()
+            #desc = checkArtDescription()
+            checkArt()
+            #print(f"art: '{artName}'\ndesc: '{desc}'")
 
             #count art if logging enabled
             if logging == "enable":
@@ -192,11 +211,12 @@ def main():
             press(ser, 'B')
             time.sleep(0.7)
         #sleep console after completion
-        sleepConsole(ser)
+        #sleepConsole(ser)
 
     #write log file if enabled
     if logging == "enable":
         writeLogFile()
+    print(f"End time: {datetime.now()}")
 
 
 if __name__ == '__main__':
