@@ -210,8 +210,8 @@ def main():
             #exit from art menu
             press(ser, 'B')
             time.sleep(0.7)
-        #sleep console after completion
-        #sleepConsole(ser)
+        sleep console after completion
+        sleepConsole(ser)
 
     #write log file if enabled
     if logging == "enable":
